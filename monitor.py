@@ -4,19 +4,12 @@ import time
 import random
 from datetime import datetime
 
-# ==========================================
-# MULTIPLE CODESANDBOX URLS
-# ==========================================
-
 SANDBOXES = [
-    "https://sandbox1.csb.app",
-    "https://sandbox2.csb.app",
-    "https://sandbox3.csb.app"
+    "https://abc123.csb.app",
+    "https://mybot.csb.app",
+    "https://panelxyz.csb.app",
+    "https://test123.csb.app"
 ]
-
-# ==========================================
-# SETTINGS
-# ==========================================
 
 REQUEST_INTERVAL = 10
 TIMEOUT = 20
@@ -36,17 +29,9 @@ USER_AGENTS = [
     "Edge/122.0",
 ]
 
-# ==========================================
-# LOGGER
-# ==========================================
-
 def log(msg):
     now = datetime.now().strftime("%H:%M:%S")
     print(f"[{now}] {msg}")
-
-# ==========================================
-# KEEP ALIVE FUNCTION
-# ==========================================
 
 def keep_alive(base_url):
 
@@ -98,10 +83,6 @@ def keep_alive(base_url):
             continue
 
         time.sleep(REQUEST_INTERVAL)
-
-# ==========================================
-# START
-# ==========================================
 
 print("🚀 MULTI CODESANDBOX MONITOR STARTED")
 
