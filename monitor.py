@@ -11,8 +11,7 @@ from datetime import datetime
 SANDBOXES = [
     "https://sandbox1.csb.app",
     "https://sandbox2.csb.app",
-    "https://sandbox3.csb.app",
-    "https://sandbox4.csb.app"
+    "https://sandbox3.csb.app"
 ]
 
 # ==========================================
