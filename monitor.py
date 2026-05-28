@@ -1,0 +1,174 @@
+import requests
+import threading
+import time
+import random
+from datetime import datetime
+
+# ==========================================
+# MULTIPLE CODESANDBOX URLS
+# ==========================================
+
+SANDBOXES = [
+    "https://sandbox1.csb.app",
+    "https://sandbox2.csb.app",
+    "https://sandbox3.csb.app",
+    "https://sandbox4.csb.app"
+]
+
+# ==========================================
+# SETTINGS
+# ==========================================
+
+REQUEST_INTERVAL = 10
+TIMEOUT = 20
+THREADS_PER_SANDBOX = 3
+
+ENDPOINTS = [
+    "/",
+    "/health",
+    "/?keepalive=1",
+    "/favicon.ico",
+]
+
+USER_AGENTS = [
+    "Mozilla/5.0",
+    "Chrome/124.0",
+    "Safari/537.36",
+    "Edge/122.0",
+]
+
+# ==========================================
+# LOGGER
+# ==========================================
+
+def log(msg):
+    now = datetime.now().strftime("%H:%M:%S")
+    print(f"[{now}] {msg}")
+
+# ==========================================
+# KEEP ALIVE FUNCTION
+# ==========================================
+
+def keep_alive(base_url):
+
+    session = requests.Session()
+
+    while True:
+
+        try:
+
+            endpoint = random.choice(ENDPOINTS)
+
+            random_id = random.randint(100000, 999999)
+
+            if "?" in endpoint:
+                url = f"{base_url}{endpoint}&t={random_id}"
+            else:
+                url = f"{base_url}{endpoint}?t={random_id}"
+
+            headers = {
+                "User-Agent": random.choice(USER_AGENTS),
+                "Cache-Control": "no-cache",
+                "Pragma": "no-cache",
+                "Connection": "keep-alive",
+                "Accept": "*/*",
+            }
+
+            start = time.time()
+
+            response = session.get(
+                url,
+                headers=headers,
+                timeout=TIMEOUT,
+                allow_redirects=True
+            )
+
+            ping = round((time.time() - start) * 1000)
+
+            if response.status_code == 200:
+                log(f"ONLINE ✅ {base_url} ({ping}ms)")
+
+            else:
+                log(f"STATUS {response.status_code} ⚠️ {base_url}")
+
+        except Exception as e:
+            log(f"ERROR ❌ {base_url}")
+            log(str(e))
+
+            time.sleep(2)
+            continue
+
+        time.sleep(REQUEST_INTERVAL)
+
+# ==========================================
+# START
+# ==========================================
+
+print("🚀 MULTI CODESANDBOX MONITOR STARTED")
+
+for sandbox in SANDBOXES:
+
+    for i in range(THREADS_PER_SANDBOX):
+
+        t = threading.Thread(
+            target=keep_alive,
+            args=(sandbox,)
+        )
+
+        t.daemon = True
+        t.start()
+
+while True:
+    time.sleep(999999)
+
+app.py
+
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "ONLINE ✅"
+
+@app.route("/health")
+def health():
+    return "OK"
+
+app.run(
+    host="0.0.0.0",
+    port=3000
+)
+
+requirements.txt
+
+requests
+flask
+
+Procfile
+
+worker: python monitor.py
+
+runtime.txt
+
+python-3.11.9
+
+Replace Sandbox URLs
+
+Replace:
+
+"https://sandbox1.csb.app"
+
+with your real CodeSandbox URLs:
+
+"https://abc123.csb.app"
+"https://mybot.csb.app"
+"https://panelxyz.csb.app"
+
+Railway Deploy
+
+Upload all files to:
+
+https://railway.com/new
+
+Then deploy.
